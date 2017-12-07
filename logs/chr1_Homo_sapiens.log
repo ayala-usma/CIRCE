@@ -1,0 +1,43 @@
+-------------------------------------------- CIRCE Output Log -------------------------------------------
+[07/12/2017 8:57:13 AM] Run started.
+[07/12/2017 8:57:13 AM] Loading reference genome.
+[07/12/2017 8:57:17 AM] Scanning BAM file.
+[07/12/2017 8:57:20 AM] 1,000,000 alignments processed - 228,690 alignments stored - 248 MB of RAM used.
+[07/12/2017 8:57:24 AM] 2,000,000 alignments processed - 247,499 alignments stored - 261 MB of RAM used.
+[07/12/2017 8:57:27 AM] 3,000,000 alignments processed - 262,999 alignments stored - 272 MB of RAM used.
+[07/12/2017 8:57:31 AM] 4,000,000 alignments processed - 337,431 alignments stored - 324 MB of RAM used.
+[07/12/2017 8:57:34 AM] 5,000,000 alignments processed - 355,776 alignments stored - 336 MB of RAM used.
+[07/12/2017 8:57:38 AM] 6,000,000 alignments processed - 370,668 alignments stored - 346 MB of RAM used.
+[07/12/2017 8:57:42 AM] 7,000,000 alignments processed - 445,755 alignments stored - 397 MB of RAM used.
+[07/12/2017 8:57:46 AM] 8,000,000 alignments processed - 464,509 alignments stored - 410 MB of RAM used.
+[07/12/2017 8:57:50 AM] 9,000,000 alignments processed - 481,094 alignments stored - 421 MB of RAM used.
+[07/12/2017 8:57:55 AM] 10,000,000 alignments processed - 559,755 alignments stored - 474 MB of RAM used.
+[07/12/2017 8:58:00 AM] 11,000,000 alignments processed - 582,062 alignments stored - 491 MB of RAM used.
+[07/12/2017 8:58:05 AM] 12,000,000 alignments processed - 594,440 alignments stored - 499 MB of RAM used.
+[07/12/2017 8:58:14 AM] 13,000,000 alignments processed - 871,766 alignments stored - 657 MB of RAM used.
+[07/12/2017 8:58:22 AM] 14,000,000 alignments processed - 1,127,842 alignments stored - 796 MB of RAM used.
+[07/12/2017 8:58:32 AM] 15,000,000 alignments processed - 1,399,810 alignments stored - 950 MB of RAM used.
+[07/12/2017 8:58:43 AM] 16,000,000 alignments processed - 1,569,019 alignments stored - 1046 MB of RAM used.
+[07/12/2017 8:58:55 AM] 17,000,000 alignments processed - 1,786,048 alignments stored - 1165 MB of RAM used.
+[07/12/2017 8:59:12 AM] 18,000,000 alignments processed - 1,903,246 alignments stored - 1237 MB of RAM used.
+[07/12/2017 8:59:24 AM] 19,000,000 alignments processed - 1,923,967 alignments stored - 1250 MB of RAM used.
+[07/12/2017 8:59:35 AM] 20,000,000 alignments processed - 1,935,264 alignments stored - 1257 MB of RAM used.
+[07/12/2017 8:59:48 AM] 21,000,000 alignments processed - 2,196,588 alignments stored - 1411 MB of RAM used.
+[07/12/2017 9:00:01 AM] 22,000,000 alignments processed - 2,213,413 alignments stored - 1422 MB of RAM used.
+[07/12/2017 9:00:15 AM] 23,000,000 alignments processed - 2,230,905 alignments stored - 1433 MB of RAM used.
+[07/12/2017 9:00:28 AM] 24,000,000 alignments processed - 2,313,781 alignments stored - 1491 MB of RAM used.
+[07/12/2017 9:00:42 AM] 25,000,000 alignments processed - 2,333,240 alignments stored - 1503 MB of RAM used.
+[07/12/2017 9:00:56 AM] 26,000,000 alignments processed - 2,346,632 alignments stored - 1511 MB of RAM used.
+[07/12/2017 9:01:11 AM] 27,000,000 alignments processed - 2,493,149 alignments stored - 1591 MB of RAM used.
+[07/12/2017 9:01:27 AM] 28,000,000 alignments processed - 2,680,334 alignments stored - 1690 MB of RAM used.
+[07/12/2017 9:01:53 AM] 29,000,000 alignments processed - 2,921,911 alignments stored - 1817 MB of RAM used.
+[07/12/2017 9:02:15 AM] 30,000,000 alignments processed - 3,206,912 alignments stored - 1966 MB of RAM used.
+[07/12/2017 9:02:53 AM] 31,000,000 alignments processed - 3,525,080 alignments stored - 2136 MB of RAM used.
+[07/12/2017 9:02:53 AM] BAM scanning finished. Starting the unique alignments filtering.
+[07/12/2017 9:02:53 AM] Unique alignments filtering finished. Starting alignments sorting by coordinate.
+[07/12/2017 9:02:53 AM] Alignments sorting by coordinate finished. Starting distance and CIGAR operators filtering.
+[07/12/2017 9:02:54 AM] Distance and CIGAR operators filtering finished. Starting the verification of read mates in the experiment.
+[07/12/2017 9:02:54 AM] Verification of read mates in the experiment finished. Splicing signal filtering started.
+[07/12/2017 9:02:54 AM] Splicing signal filtering finished. circRNA prediction started.
+[07/12/2017 9:02:54 AM] 1,628 predicted circRNAs.
+[07/12/2017 9:02:54 AM] Run finished.
