@@ -8,6 +8,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/classmexer.jar"/>
 	<classpathentry kind="lib" path="lib/NGSEPcore_3.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/htsjdk.jar"/>
+	<classpathentry kind="lib" path="lib/htsjdk-2.13.2-4-g80122b9-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
