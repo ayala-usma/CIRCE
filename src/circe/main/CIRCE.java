@@ -576,12 +576,11 @@ public class CIRCE {
 	
 	
 	/**
-	 * Prints the final statistics to standard output.
+	 * Prints the final statistics to standard outsput.
 	 */
 	public void printOutput() 
 	{
 		DecimalFormat formatter = new DecimalFormat("###,###,###,###,###"); 
-		long memoryUsage = getMemoryUsageOf(predictedCircRNAs);
 		String predictedRNAs = formatter.format(predictedCircRNAs.size());
 		System.err.print("[" + getTimeStamp() + "] " +  predictedRNAs + " predicted circRNAs.");
 
