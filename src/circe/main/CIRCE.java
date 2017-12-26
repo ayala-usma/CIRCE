@@ -1,5 +1,6 @@
 package circe.main;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -17,6 +18,16 @@ import ngsep.alignments.io.ReadAlignmentFileReader;
 import ngsep.genome.ReferenceGenome;
 
 import com.javamex.classmexer.MemoryUtil;
+
+import htsjdk.samtools.DefaultSAMRecordFactory;
+import htsjdk.samtools.SAMFileWriter;
+import htsjdk.samtools.SAMFileWriterFactory;
+import htsjdk.samtools.SAMRecord;
+import htsjdk.samtools.SamInputResource;
+import htsjdk.samtools.SamReader;
+import htsjdk.samtools.SamReaderFactory;
+import htsjdk.samtools.ValidationStringency;
+import htsjdk.samtools.seekablestream.SeekableStream;
 
 /**
  * Software to perform annotation independent detection of circular RNAs. 
@@ -73,11 +84,11 @@ public class CIRCE {
 		CIRCE instance = new CIRCE();
 		System.err.println("-------------------------------------------- CIRCE Output Log -------------------------------------------");
 		System.err.println("[" + instance.getTimeStamp() + "]" + " Run started." );
-		instance.alignments = new HashMap<String, ArrayList<ReadAlignment>>();
 		System.err.println("[" + instance.getTimeStamp() + "]" + " Loading reference genome." );
 		instance.refGenome = new ReferenceGenome(args[1]);
 		System.err.println("[" + instance.getTimeStamp() + "]" + " Scanning BAM file." );
 		instance.storedAlignments = 0;
+		instance.alignments = new HashMap<String, ArrayList<ReadAlignment>>();
 		instance.processAlignmentsFile(args[0]);
 		instance.printOutput();
 		System.err.println("");
@@ -89,38 +100,51 @@ public class CIRCE {
 	 * @param filename Path to the BAM file to process
 	 * @throws IOException If the file cannot be read
 	 */
-	public void processAlignmentsFile(String filename) throws IOException {
-		ReadAlignmentFileReader reader = null;
-		try {
-			reader = new ReadAlignmentFileReader(filename);
-			Iterator<ReadAlignment> it = reader.iterator();
+	public void processAlignmentsFile(String filename) throws IOException {		
+		
+		//Creating the alignment reader and writer files with HTSJDK.
+		SamReader reader = null;
+		SAMFileWriter BAMWriter = null;
+		
+		try 
+		{
+			//Creating the alignment file reader.
+			reader = SamReaderFactory.makeDefault().open(new File(filename));
 			
+			//Creating the temporary output file and the alignment file writer.
+			String tmpFilePath = System.getProperty("user.dir");
+			File tmpBAMFile = new File(tmpFilePath + "tmp.bam");
+			BAMWriter = new SAMFileWriterFactory().makeSAMOrBAMWriter(reader.getFileHeader(), true, tmpBAMFile); 
+			
+			//Creating the iterator for the alignment file. 
+			Iterator<SAMRecord> it = reader.iterator();
+			
+			//Counters for analyzed and saved alignments.
 			int alignmentCounter = 1;
 			int compliantAlignments = 0;
+			
+			//Reading the alignment file.			
 			while (it.hasNext()) 
 			{			
-				ReadAlignment aln = it.next();
+				//Recovers the next element.
+				SAMRecord aln = it.next();
 				
-				if(!aln.isReadUnmapped() && !aln.isSecondary() &&  aln.getNumCigarItems() > 1 && aln.isPartialAlignment(CLIPPING_THRESHOLD))
+				//Looking for PCC signals in the alignments.
+				if(!aln.getReadUnmappedFlag() && !aln.isSecondaryOrSupplementary() &&  aln.getCigarLength() > 1)
 				{	
-					String readName = aln.getReadName();
-					ArrayList<ReadAlignment> currentReadAlignments = alignments.get(readName);
+					int firstElementLength = aln.getCigar().getFirstCigarElement().getLength();
+					int lastElementLength = aln.getCigar().getLastCigarElement().getLength();
 					
-					if(currentReadAlignments == null)
+					if((aln.getCigar().isLeftClipped() && firstElementLength >= CLIPPING_THRESHOLD) 
+					   || (aln.getCigar().isRightClipped() && lastElementLength >= CLIPPING_THRESHOLD)) 
 					{
-						ArrayList<ReadAlignment> newAlignmentRead = new ArrayList<ReadAlignment>();
-						newAlignmentRead.add(aln);
-						alignments.put(readName, newAlignmentRead);
+						//If the alignment presents PCC signals, it is stored in the temporary file and the count increases.
+						BAMWriter.addAlignment(aln);												
+						compliantAlignments++;
 					}
-					
-					else
-					{
-						currentReadAlignments.add(aln);
-					}
-					
-					compliantAlignments++;
 				}
 				
+				//Counts the number of processed alignments and reports the progress and memory usage per each 1.000.000 alignments.
 				alignmentCounter++;
 				
 				if(alignmentCounter % 1000000 == 0)
@@ -139,7 +163,12 @@ public class CIRCE {
 		} 
 		
 		finally {
-			if(reader!=null)reader.close();
+			
+			if(reader != null || BAMWriter != null) 
+			{
+				reader.close();
+				BAMWriter.close();
+			}
 		}
 		
 		//Removing the unique alignments that complied with the previous conditions.
@@ -171,6 +200,16 @@ public class CIRCE {
 	 */
 	public void removeUniqueAlignments()
 	{
+		/**
+		 * NUEVA ESTRATEGIA: UTILIZO UN DOBLE HASHING EN DONDE RECORRO EL BAM TEMPORAL PARA CONTAR EL NÚMERO DE ALINEAMIENTOS DE CADA LECTURA, 
+		 * ALMACENANDO ESOS VALORES EN UNA TABLA DE HASH. DESPUÉS RECORRO EL ARCHIVO BAM TEMPORAL, RECUPERO EL NOMBRE DE LA LECTURA Y GUARDO
+		 * EL ALINEAMIENTO EN LA TABLA DE ALINEAMIENTOS SI ESA LECTURA TIENE MÁS DE UN ALINEAMIENTO SEGÚN LA SEGUNDA TABLA. 
+		 * ESTO LO HAGO CON LAS CLASES DE NGSEP.
+		 */
+		
+		
+		
+		
 		//Verbose response
 		System.err.println("[" + getTimeStamp() + "]" + " BAM scanning finished. Starting the unique alignments filtering." );
 		
